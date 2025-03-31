@@ -1,0 +1,135 @@
+/* Home.css */
+.home {
+  background-color: #000;
+  /* Fill the full viewport height */
+  min-height: 100vh;
+  /* Fill the full viewport width */
+  width: 100%;
+
+  /* Use white text (could also rely on global color) */
+  color: #fff;
+
+  /* No extra margin or padding inside .home */
+  margin: 0;
+  padding: 0;
+
+  /* Vertical layout */
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header bar */
+.home-header {
+  background-color: #222;
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.home-title {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.home-header-right {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+/* Search section */
+.home-search {
+  padding: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.search-input-container {
+  position: relative;
+}
+
+.search-input {
+  padding: 8px 16px;
+  border-radius: 25px;
+  border: 1px solid #ccc;
+  width: 200px;
+  font-size: 16px;
+}
+
+.clear-btn {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+/* Button to toggle between movies and TV shows */
+.toggle-button {
+  margin-left: 8px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 25px;
+  background-color: #d32f2f;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* Grid for movie cards */
+.card-grid {
+  display: grid;
+  /* Create 5 columns, each at least 200px wide */
+  grid-template-columns: repeat(5, minmax(200px, 1fr));
+
+  /* If you want the same gap for rows and columns, just increase gap */
+  /* gap: 30px; */
+
+  /* Or define row-gap and column-gap separately */
+  row-gap: 50px; /* More space between rows */
+  column-gap: 10px; /* Less space between columns */
+  padding: 16px;
+}
+
+.card {
+  background-color: #444;
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+
+  /* Increase the card's width */
+  width: 280px;
+  /* optional: set a fixed height or let the image define height */
+  /* height: 300px; */
+}
+
+.card img {
+  width: 100%;
+  /* If you have a fixed height, use object-fit to maintain aspect ratio */
+  /* height: 100%; 
+       object-fit: cover; */
+}
+
+.card-title {
+  padding: 8px;
+  font-size: 14px;
+  font-weight: bold;
+  background-color: #444;
+}
+
+/* Favorite icon in top-right corner */
+.favorite-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  color: #d32f2f;
+}
