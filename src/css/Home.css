@@ -81,31 +81,32 @@
   cursor: pointer;
 }
 
-/* Grid for movie cards */
 .card-grid {
   display: grid;
-  /* Create 5 columns, each at least 200px wide */
-  grid-template-columns: repeat(5, minmax(200px, 1fr));
-
-  /* If you want the same gap for rows and columns, just increase gap */
-  /* gap: 30px; */
-
-  /* Or define row-gap and column-gap separately */
-  row-gap: 50px; /* More space between rows */
-  column-gap: 10px; /* Less space between columns */
-  padding: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 20px;
+  padding: 20px;
+  justify-items: center; /* center cards horizontally */
 }
 
 .card {
-  position: relative; /* Needed for absolute positioning of the favorite button */
+  position: relative;
   background-color: #444;
   border-radius: 8px;
   overflow: hidden;
-  width: 280px;
+  width: 100%;
+  max-width: 240px; /* limits size on large screens */
+  transition: transform 0.2s ease;
 }
 
 .card img {
   width: 100%;
+  height: auto;
+  display: block;
+}
+
+.card:hover {
+  transform: scale(1.03);
 }
 
 .card-title {
@@ -118,11 +119,25 @@
 /* Favorite icon in top-right corner */
 .favorite-btn {
   position: absolute;
-  top: 10px; /* Adjust as needed */
-  right: 10px; /* Adjust as needed */
+  top: -14px; /* Adjust as needed */
+  right: -20px; /* Adjust as needed */
   background: none;
   border: none;
   cursor: pointer;
   font-size: 24px;
   color: #d32f2f;
+}
+
+.media-type-dropdown {
+  background-color: #e50914; /* Netflix-style red */
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 8px 12px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
 }

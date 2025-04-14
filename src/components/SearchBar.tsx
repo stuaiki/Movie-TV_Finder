@@ -4,11 +4,15 @@ import "../css/Home.css";
 interface SearchBarProps {
   searchQuery: string;
   setSearchQuery: (query: string) => void;
+  mediaType: "movie" | "tv" | "both";
+  setMediaType: (type: "movie" | "tv" | "both") => void;
 }
 
 export const SearchBar: React.FC<SearchBarProps> = ({
   searchQuery,
   setSearchQuery,
+  mediaType,
+  setMediaType,
 }) => {
   return (
     <div className="home-search">
@@ -28,7 +32,19 @@ export const SearchBar: React.FC<SearchBarProps> = ({
           ✖
         </button>
       </div>
-      <button className="toggle-button">Movie/TV Show</button>
+
+      <select
+        className="media-type-dropdown"
+        value={mediaType}
+        onChange={(e) =>
+          setMediaType(e.target.value as "movie" | "tv" | "both")
+        }
+        style={{ padding: "8px", marginLeft: "10px" }}
+      >
+        <option value="both">Movie/TV Show</option>
+        <option value="movie">Movie</option>
+        <option value="tv">TV Show</option>
+      </select>
     </div>
   );
 };

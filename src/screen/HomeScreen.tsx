@@ -8,6 +8,7 @@ import { MovieCard } from "../components/MovieCard";
 export const Home: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
+  const [mediaType, setMediaType] = useState<"movie" | "tv" | "both">("both");
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -23,8 +24,13 @@ export const Home: React.FC = () => {
   return (
     <div className="home">
       <Header />
-      <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
-      <MovieCard searchQuery={searchQuery} />
+      <SearchBar
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        mediaType={mediaType}
+        setMediaType={setMediaType}
+      />
+      <MovieCard searchQuery={searchQuery} mediaType={mediaType} />
     </div>
   );
 };
