@@ -7,12 +7,12 @@ import { MovieCard } from "../components/MovieCard";
 
 export const Home: React.FC = () => {
   const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
 
-  // Simulate data fetching (replace with your actual API call)
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 2000);
+    }, 1000);
     return () => clearTimeout(timer);
   }, []);
 
@@ -23,8 +23,8 @@ export const Home: React.FC = () => {
   return (
     <div className="home">
       <Header />
-      <SearchBar />
-      <MovieCard />
+      <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+      <MovieCard searchQuery={searchQuery} />
     </div>
   );
 };

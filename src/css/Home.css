@@ -97,22 +97,15 @@
 }
 
 .card {
+  position: relative; /* Needed for absolute positioning of the favorite button */
   background-color: #444;
   border-radius: 8px;
   overflow: hidden;
-  position: relative;
-
-  /* Increase the card's width */
   width: 280px;
-  /* optional: set a fixed height or let the image define height */
-  /* height: 300px; */
 }
 
 .card img {
   width: 100%;
-  /* If you have a fixed height, use object-fit to maintain aspect ratio */
-  /* height: 100%; 
-       object-fit: cover; */
 }
 
 .card-title {
@@ -125,11 +118,11 @@
 /* Favorite icon in top-right corner */
 .favorite-btn {
   position: absolute;
-  top: 8px;
-  right: 8px;
+  top: 10px; /* Adjust as needed */
+  right: 10px; /* Adjust as needed */
   background: none;
   border: none;
   cursor: pointer;
-  font-size: 20px;
+  font-size: 24px;
   color: #d32f2f;
 }
