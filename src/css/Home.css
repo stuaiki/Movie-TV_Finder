@@ -20,8 +20,8 @@
 
 /* Header bar */
 .home-header {
-  background-color: #222;
-  padding: 16px;
+  background-color: #1e1e1e;
+  padding: 16px 32px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -29,13 +29,32 @@
 
 .home-title {
   font-size: 24px;
-  font-weight: bold;
+  font-weight: 700;
+  color: #fff;
 }
 
 .home-header-right {
   display: flex;
-  gap: 16px;
+  gap: 12px;
   align-items: center;
+}
+
+/* Modern button styling */
+.home-header-right button {
+  padding: 8px 16px;
+  background-color: #ffffff;
+  color: #1e1e1e;
+  border: none;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.home-header-right button:hover {
+  background-color: #f0f0f0;
+  transform: scale(1.05);
 }
 
 /* Search section */
@@ -44,6 +63,23 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.icon-button img {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+}
+
+.icon-button {
+  padding: 6px;
+  background-color: #ffffff;
+  border: none;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
 }
 
 .search-input-container {
