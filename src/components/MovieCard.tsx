@@ -24,18 +24,7 @@ export const MovieCard: React.FC<MovieCardProps> = ({
   const [page, setPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(1);
 
-  // 🔁 Refetch when page changes
-  useEffect(() => {
-    fetchMovies(page);
-  }, [page]);
-
-  // 🔄 Reset when search or type changes
-  useEffect(() => {
-    setMovies([]);
-    setPage(1);
-    fetchMovies(1); // 👈 manually fetch first page after reset
-  }, [searchQuery, mediaType]);
-
+  // ✅ FETCH FUNCTION
   const fetchMovies = useCallback(
     (pageNumber: number) => {
       const apiKey = "6f0ede065b4f9643843249b3d1ad379d";
@@ -43,6 +32,7 @@ export const MovieCard: React.FC<MovieCardProps> = ({
         ? `&query=${encodeURIComponent(searchQuery)}`
         : "";
 
+      // 🔍 Handle Search
       if (searchQuery) {
         const endpoint = `https://api.themoviedb.org/3/search/${
           mediaType === "both" ? "multi" : mediaType
@@ -76,6 +66,7 @@ export const MovieCard: React.FC<MovieCardProps> = ({
         return;
       }
 
+      // 📺 Both (Popular Movie + TV)
       if (mediaType === "both") {
         const movieEndpoint = `https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}&page=${pageNumber}&language=en-US`;
         const tvEndpoint = `https://api.themoviedb.org/3/tv/popular?api_key=${apiKey}&page=${pageNumber}&language=en-US`;
@@ -88,6 +79,7 @@ export const MovieCard: React.FC<MovieCardProps> = ({
               ...(movieData.results || []),
               ...(tvData.results || []),
             ];
+
             combined.sort((a, b) => (b.popularity ?? 0) - (a.popularity ?? 0));
 
             setMovies((prev) => [...prev, ...combined]);
@@ -97,7 +89,7 @@ export const MovieCard: React.FC<MovieCardProps> = ({
         return;
       }
 
-      // Only movie or TV popular
+      // 🎬 Movie or TV Only
       const popularEndpoint = `https://api.themoviedb.org/3/${mediaType}/popular?api_key=${apiKey}&page=${pageNumber}&language=en-US`;
 
       fetch(popularEndpoint)
@@ -111,6 +103,20 @@ export const MovieCard: React.FC<MovieCardProps> = ({
     },
     [searchQuery, mediaType]
   );
+
+  // 🔄 When mediaType or search changes
+  useEffect(() => {
+    setMovies([]);
+    setPage(1);
+    fetchMovies(1); // ✅ Fetch first page
+  }, [searchQuery, mediaType, fetchMovies]);
+
+  // 🔁 Fetch more when page increases (for Load More)
+  useEffect(() => {
+    if (page > 1) {
+      fetchMovies(page);
+    }
+  }, [page, fetchMovies]);
 
   const toggleFavorite = (movieId: number) => {
     setFavorites((prev) => ({
