@@ -1,25 +1,18 @@
-import React, { useEffect, useState } from "react";
+// HomeScreen.tsx
+import React, { useState, useEffect, useContext } from "react";
+import { FavoritesContext } from "../context/FavoritesContext";
 import { LoadingIndicator } from "../components/LoadingIndicator";
 import "../css/Home.css";
 import { Header } from "../components/Header";
 import { SearchBar } from "../components/SearchBar";
 import { MovieCard } from "../components/MovieCard";
-
-type Movie = {
-  id: number;
-  title?: string;
-  name?: string;
-  poster_path: string;
-  media_type?: string;
-  popularity?: number;
-};
+import ErrorBoundary from "../components/ErrorBoundary";
 
 export const Home: React.FC = () => {
+  const { favorites, toggleFavorite } = useContext(FavoritesContext);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [mediaType, setMediaType] = useState<"movie" | "tv" | "both">("both");
-  const [favorites, setFavorites] = useState<Movie[]>([]);
-  const [showFavorites, setShowFavorites] = useState(false);
 
   // Simulate loading
   useEffect(() => {
@@ -29,39 +22,27 @@ export const Home: React.FC = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  const toggleFavorite = (movie: Movie) => {
-    setFavorites((prev) => {
-      const exists = prev.some((m) => m.id === movie.id);
-      return exists ? prev.filter((m) => m.id !== movie.id) : [...prev, movie];
-    });
-  };
-
   if (loading) {
     return <LoadingIndicator />;
   }
 
   return (
     <div className="home">
-      <Header
-        isFavoriteView={showFavorites}
-        onToggleFavorites={() => setShowFavorites((prev) => !prev)}
+      <Header />
+      <SearchBar
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        mediaType={mediaType}
+        setMediaType={setMediaType}
       />
-      {!showFavorites && (
-        <SearchBar
+      <ErrorBoundary fallback={<div>Something went wrong loading movies.</div>}>
+        <MovieCard
           searchQuery={searchQuery}
-          setSearchQuery={setSearchQuery}
           mediaType={mediaType}
-          setMediaType={setMediaType}
+          favorites={favorites}
+          toggleFavorite={toggleFavorite}
         />
-      )}
-      <MovieCard
-        searchQuery={showFavorites ? "" : searchQuery}
-        mediaType={showFavorites ? "both" : mediaType}
-        favorites={favorites}
-        toggleFavorite={toggleFavorite}
-        movies={showFavorites ? favorites : undefined}
-        isFavoriteView={showFavorites}
-      />
+      </ErrorBoundary>
     </div>
   );
 };

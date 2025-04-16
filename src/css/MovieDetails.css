@@ -1,0 +1,61 @@
+/* MovieDetails.css */
+
+.movie-details {
+  /* Allows absolute positioning of the back button relative to this container */
+  position: relative;
+
+  /* Use Flexbox to center content horizontally and (if space allows) vertically */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  /* Full-height background */
+  min-height: 100vh;
+
+  /* Spacing and styling */
+  padding: 20px;
+  background-color: #000;
+  color: #fff;
+  box-sizing: border-box;
+}
+
+/* The back button is absolutely positioned at the bottom-right */
+.back-btn {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+
+  background-color: #444;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Poster is centered (by the parent flex container), with a max width for responsiveness */
+.details-poster {
+  max-width: 300px;
+  border-radius: 8px;
+}
+
+/* Center text for title, overview, etc. */
+.details-title {
+  font-size: 32px;
+  margin-top: 20px;
+  text-align: center;
+}
+
+.details-overview {
+  margin-top: 20px;
+  font-size: 16px;
+  text-align: center;
+}
+
+.details-info {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #ccc;
+  text-align: center;
+}

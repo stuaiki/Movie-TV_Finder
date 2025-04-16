@@ -1,21 +1,17 @@
-import React, { useState, useEffect, useCallback } from "react";
+// MovieCard.tsx
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { Movie } from "../type/movie"; // Ensure this path is correct
+import useFetchMovies from "../hooks/useFetchMovies";
 import "../css/Home.css";
-
-type Movie = {
-  id: number;
-  title?: string;
-  name?: string;
-  poster_path: string;
-  media_type?: string;
-  popularity?: number;
-};
+import ErrorBoundary from "./ErrorBoundary";
 
 interface MovieCardProps {
   searchQuery: string;
   mediaType: "movie" | "tv" | "both";
   favorites: Movie[];
   toggleFavorite: (movie: Movie) => void;
-  movies?: Movie[]; // used in favorites view
+  movies?: Movie[]; // Optional prop for favorites view
   isFavoriteView?: boolean;
 }
 
@@ -27,122 +23,67 @@ export const MovieCard: React.FC<MovieCardProps> = ({
   movies: customMovies,
   isFavoriteView = false,
 }) => {
-  const [movies, setMovies] = useState<Movie[]>([]);
-  const [page, setPage] = useState<number>(1);
-  const [totalPages, setTotalPages] = useState<number>(1);
+  const navigate = useNavigate();
 
-  // ✅ FETCH FUNCTION
-  const fetchMovies = useCallback(
-    (pageNumber: number) => {
-      const apiKey = "6f0ede065b4f9643843249b3d1ad379d";
-      const queryParam = searchQuery
-        ? `&query=${encodeURIComponent(searchQuery)}`
-        : "";
+  // Track the current page for pagination
+  const [currentPage, setCurrentPage] = useState<number>(1);
 
-      if (searchQuery) {
-        const endpoint = `https://api.themoviedb.org/3/search/${
-          mediaType === "both" ? "multi" : mediaType
-        }?api_key=${apiKey}&page=${pageNumber}${queryParam}&language=en-US&include_adult=false`;
-
-        fetch(endpoint)
-          .then((res) => res.json())
-          .then((data) => {
-            let results = data.results || [];
-
-            // ✅ Keep only movie/tv items when using `both`
-            if (mediaType === "both") {
-              results = results.filter(
-                (item: Movie) =>
-                  item.media_type === "movie" || item.media_type === "tv"
-              );
-            }
-
-            setMovies((prev) => [...prev, ...results]);
-            setTotalPages(data.total_pages);
-          })
-          .catch((err) => console.error("Error fetching search:", err));
-        return;
-      }
-
-      // 📺 Both: fetch movie and TV popular
-      if (mediaType === "both") {
-        const movieEndpoint = `https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}&page=${pageNumber}&language=en-US`;
-        const tvEndpoint = `https://api.themoviedb.org/3/tv/popular?api_key=${apiKey}&page=${pageNumber}&language=en-US`;
-
-        Promise.all([fetch(movieEndpoint), fetch(tvEndpoint)])
-          .then(async ([movieRes, tvRes]) => {
-            const movieData = await movieRes.json();
-            const tvData = await tvRes.json();
-            const combined = [
-              ...(movieData.results || []),
-              ...(tvData.results || []),
-            ];
-
-            combined.sort((a, b) => (b.popularity ?? 0) - (a.popularity ?? 0));
-
-            setMovies((prev) => [...prev, ...combined]);
-            setTotalPages(Math.min(movieData.total_pages, tvData.total_pages));
-          })
-          .catch((err) => console.error("Error fetching both popular:", err));
-        return;
-      }
-
-      // 🎬 Movie or TV Only
-      const popularEndpoint = `https://api.themoviedb.org/3/${mediaType}/popular?api_key=${apiKey}&page=${pageNumber}&language=en-US`;
-
-      fetch(popularEndpoint)
-        .then((res) => res.json())
-        .then((data) => {
-          const results = data.results || [];
-          setMovies((prev) => [...prev, ...results]);
-          setTotalPages(data.total_pages);
-        })
-        .catch((err) => console.error("Error fetching popular:", err));
-    },
-    [searchQuery, mediaType]
-  );
-
-  // 🔄 On mediaType or search change → reset + fetch
+  // Reset pagination when the filter (searchQuery or mediaType) changes
   useEffect(() => {
-    if (!isFavoriteView) {
-      setMovies([]);
-      setPage(1);
-      fetchMovies(1);
-    }
-  }, [searchQuery, mediaType, fetchMovies, isFavoriteView]);
+    setCurrentPage(1);
+  }, [searchQuery, mediaType]);
 
-  // 🔁 Load more pages
-  useEffect(() => {
-    if (!isFavoriteView && page > 1) {
-      fetchMovies(page);
-    }
-  }, [page, fetchMovies, isFavoriteView]);
+  // Use the custom hook with the current page value
+  const { movies, totalPages, isLoading, error } = useFetchMovies({
+    searchQuery,
+    mediaType,
+    page: currentPage,
+  });
 
-  const displayedMovies = isFavoriteView ? customMovies || [] : movies;
+  // Decide which movies to display:
+  // - If in favorites view, use customMovies passed via props.
+  // - Otherwise, use movies fetched by the hook.
+  const displayedMovies: Movie[] = isFavoriteView ? customMovies || [] : movies;
 
   return (
     <div>
-      <div className="card-grid">
-        {displayedMovies.map((movie) => (
-          <div key={movie.id} className="card">
-            <img
-              src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-              alt="Movie Poster"
-            />
-            <div className="card-title">{movie.title || movie.name}</div>
-            <button
-              onClick={() => toggleFavorite(movie)}
-              className="favorite-btn"
-            >
-              {favorites.some((fav) => fav.id === movie.id) ? "❤" : "♡"}
-            </button>
+      {error && <div className="error-message">{error}</div>}
+      {isLoading && currentPage === 1 ? (
+        <div>Loading...</div>
+      ) : (
+        <ErrorBoundary>
+          <div className="card-grid">
+            {displayedMovies.map((movie) => (
+              <div
+                key={movie.id}
+                className="card"
+                onClick={() => navigate(`/movie/${movie.id}`)}
+                style={{ cursor: "pointer" }}
+              >
+                <img
+                  src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                  alt={movie.title || movie.name}
+                />
+                <div className="card-title">{movie.title || movie.name}</div>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation(); // Prevent navigation when toggling favorite
+                    toggleFavorite(movie);
+                  }}
+                  className="favorite-btn"
+                >
+                  {favorites.some((fav) => fav.id === movie.id) ? "❤" : "♡"}
+                </button>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
+        </ErrorBoundary>
+      )}
 
-      {!isFavoriteView && page < totalPages && (
+      {/* Only show Load More button if not in favorites view, not loading, and there's another page */}
+      {!isFavoriteView && !isLoading && currentPage < totalPages && (
         <button
-          onClick={() => setPage((prev) => prev + 1)}
+          onClick={() => setCurrentPage((prev) => prev + 1)}
           style={{ display: "block", margin: "20px auto" }}
         >
           Load More

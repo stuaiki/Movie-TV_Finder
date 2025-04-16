@@ -1,12 +1,6 @@
 import React from "react";
 import "../css/Home.css";
-
-interface SearchBarProps {
-  searchQuery: string;
-  setSearchQuery: (query: string) => void;
-  mediaType: "movie" | "tv" | "both";
-  setMediaType: (type: "movie" | "tv" | "both") => void;
-}
+import { SearchBarProps } from "../type/movie";
 
 export const SearchBar: React.FC<SearchBarProps> = ({
   searchQuery,
