@@ -1,54 +1,38 @@
-# React + TypeScript + Vite
+# Movie/TV Show Finder
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Movie/TV Show Finder is a React application built with TypeScript and Vite. The app allows users to search for movies and TV shows using TheMovieDB (TMDb) API, view details about each title, and manage a list of favorites that persists across sessions. The project makes use of modern React features such as hooks, context for state management, and custom hooks for API calls and local storage handling.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Project Description
 
-## Expanding the ESLint configuration
+This project is a movie and TV show finder application that provides the following functionality:
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **Search and Filter:**  
+  Users can search for movies and TV shows, and filter results by selecting from Movie, TV Show, or both.
+- **Detail View:**  
+  Clicking on a movie or TV show displays detailed information retrieved from the TMDb API.
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+- **Favorites Management:**  
+  Users can mark titles as favorites. Favorites are stored in local storage to persist across browser sessions. The app uses a React context along with a custom `useLocalStorage` hook for this feature.
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+- **Pagination and Infinite Scroll:**  
+  The project supports pagination (i.e., load more results) when browsing popular movies/TV shows.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- **Error Handling:**  
+  An ErrorBoundary component is integrated to catch render-time errors and display a fallback UI, ensuring the app remains resilient in case unexpected issues occur.
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+- **Third-party Libraries:**  
+  The project makes use of `react-router-dom` for routing and Vite for fast refresh and build performance.
+
+---
+
+## Instructions to Run the Project
+
+1. **Clone the Repository**
+   ```bash
+   git clone https://github.com/stuaiki/Movie-TV_Finder.git
+   cd movie-tv-finder
+   npm install
+   npm run dev
+   ```

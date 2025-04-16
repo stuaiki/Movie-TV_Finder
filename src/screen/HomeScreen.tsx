@@ -1,6 +1,6 @@
 // HomeScreen.tsx
 import React, { useState, useEffect, useContext } from "react";
-import { FavoritesContext } from "../context/FavoritesContext";
+import FavoritesContext from "../context/FavoritesContext";
 import { LoadingIndicator } from "../components/LoadingIndicator";
 import "../css/Home.css";
 import { Header } from "../components/Header";

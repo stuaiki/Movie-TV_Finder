@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import "../css/Home.css";
-import { FavoritesContext } from "../context/FavoritesContext";
+import FavoritesContext from "../context/FavoritesContext"; // Updated path to use the context-only file
 import { Header } from "../components/Header";
 import { MovieCard } from "../components/MovieCard";
 
