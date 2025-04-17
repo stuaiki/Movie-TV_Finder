@@ -9,7 +9,7 @@ import "./App.css";
 function App() {
   return (
     <FavoritesProvider>
-      <Router>
+      <Router basename="/Movie-TV_Finder">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/movie/:id" element={<MovieDetails />} />
