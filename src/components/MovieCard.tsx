@@ -1,19 +1,10 @@
 // MovieCard.tsx
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Movie } from "../type/movie"; // Ensure this path is correct
+import { Movie, MovieCardProps } from "../type/movie"; // Ensure this path is correct
 import useFetchMovies from "../hooks/useFetchMovies";
 import "../css/Home.css";
 import ErrorBoundary from "./ErrorBoundary";
-
-interface MovieCardProps {
-  searchQuery: string;
-  mediaType: "movie" | "tv" | "both";
-  favorites: Movie[];
-  toggleFavorite: (movie: Movie) => void;
-  movies?: Movie[]; // Optional prop for favorites view
-  isFavoriteView?: boolean;
-}
 
 export const MovieCard: React.FC<MovieCardProps> = ({
   searchQuery,

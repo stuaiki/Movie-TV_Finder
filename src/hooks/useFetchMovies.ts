@@ -1,12 +1,6 @@
 // src/hooks/useFetchMovies.ts
 import { useState, useEffect } from "react";
-import { Movie } from "../type/movie";
-
-interface UseFetchMoviesProps {
-  searchQuery: string;
-  mediaType: "movie" | "tv" | "both";
-  page: number;
-}
+import { Movie, UseFetchMoviesProps } from "../type/movie";
 
 /**
  * Custom hook to fetch movies from TMDB.

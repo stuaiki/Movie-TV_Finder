@@ -27,3 +27,14 @@ export interface SearchBarProps {
   mediaType: "movie" | "tv" | "both";
   setMediaType: (type: "movie" | "tv" | "both") => void;
 }
+
+export interface FavoritesContextType {
+  favorites: Movie[];
+  toggleFavorite: (movie: Movie) => void;
+}
+
+export interface UseFetchMoviesProps {
+  searchQuery: string;
+  mediaType: "movie" | "tv" | "both";
+  page: number;
+}
